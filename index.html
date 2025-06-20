@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Para: Mandi💙</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(#ff81e0, #fad0c4);
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      text-align: center;
+
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .typing {
+      font-size: 1.2rem;
+      max-width: 80%;
+      min-height: 120px;
+      margin-bottom: 30px;
+      line-height: 1.4;
+      white-space: pre-wrap; /* para respeitar quebras de linha */
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #fff;
+      color: #e91e63;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #ffe0e6;
+    }
+    .hidden-message {
+      display: none;
+      font-size: 1.3rem;
+      margin-top: 30px;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 15px;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: floatUp linear infinite;
+      cursor: pointer;
+      user-select: none;
+    }
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        bottom: -50px;
+        opacity: 1;
+      }
+      100% {
+        bottom: 100%;
+        opacity: 0;
+      }
+    }
+
+    @keyframes explode {
+      to {
+        transform: scale(3) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .carrossel {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      margin: 20px auto 0;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      background: transparent;
+    }
+    .carrossel-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: auto;
+      height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .carrossel-img.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Feliz Dia dos Namorados Princesa 💙</h1>
+  <div class="typing" id="typing"></div>
+  <button onclick="showMessage()">Clique para ver a surpresa</button>
+
+  <div class="hidden-message" id="hiddenMessage">
+    <p>Cada momento com você é especial. Te amo demaisão! ❤️</p>
+    <div class="carrossel" id="carrossel">
+      <img class="carrossel-img active" src="foto1.jpg" alt="Foto 1" />
+    </div>
+  </div>
+
+  <script>
+    const frases = [
+      "Oi, minha vida... como você ta?",
+      "Você é meu porto seguro.",
+      "Sou muito grato por poder compartilhar a vida com você.",
+      "Te amo mais do que palavras podem expressar.",
+      "Ansioso pra passar a vida com você, até os 137 anos.",
+      "Que o nosso amor continue crescendo, forte e lindo como sempre. Feliz dia dos namorados! 💕"
+    ];
+
+    const typingDiv = document.getElementById("typing");
+    let fraseIndex = 0;
+    let charIndex = 0;
+
+    function type() {
+      if (charIndex < frases[fraseIndex].length) {
+        typingDiv.innerHTML += frases[fraseIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(type, 50);
+      } else {
+        setTimeout(() => {
+          apagar();
+        }, 2000); // espera 2 segundos antes de apagar
+      }
+    }
+
+    function apagar() {
+      if (charIndex > 0) {
+        typingDiv.innerHTML = frases[fraseIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(apagar, 30);
+      } else {
+        fraseIndex = (fraseIndex + 1) % frases.length;
+        setTimeout(type, 500);
+      }
+    }
+
+    // Começa a digitar a primeira frase
+    type();
+
+    function showMessage() {
+      const msg = document.getElementById("hiddenMessage");
+      msg.style.display = "block";
+      iniciarCarrossel();
+    }
+
+    // Animação dos corações com clique explosivo
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+      // Evento clique para explosão
+      heart.addEventListener("click", () => {
+        heart.style.animation = "explode 0.5s forwards";
+        setTimeout(() => heart.remove(), 500);
+      });
+
+      document.body.appendChild(heart);
+
+      // Remove automaticamente após flutuar
+      setTimeout(() => heart.remove(), 6000);
+    }, 500);
+
+    // Carrossel de imagens
+    const imagens = ["foto1.jpg", "foto2.jpg", "foto3.jpg", "foto4.jpg"];
+    let atual = 0;
+    let carrosselIniciado = false;
+
+    function iniciarCarrossel() {
+      if (carrosselIniciado) return;
+      carrosselIniciado = true;
+
+      const carrossel = document.getElementById("carrossel");
+
+      setInterval(() => {
+        atual = (atual + 1) % imagens.length;
+
+        const novaImg = document.createElement("img");
+        novaImg.src = imagens[atual];
+        novaImg.className = "carrossel-img active";
+        carrossel.appendChild(novaImg);
+
+        const imagensAnteriores = carrossel.querySelectorAll(".carrossel-img");
+        if (imagensAnteriores.length > 1) {
+          imagensAnteriores[0].classList.remove("active");
+          setTimeout(() => imagensAnteriores[0].remove(), 1000);
+        }
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
